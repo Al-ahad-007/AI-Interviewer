@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Interviewer - AI-Powered Interview Practice</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 10px 25px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--gradient);
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #555;
+        }
+        
+        /* Interview Types Section */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .interview-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .interview-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .interview-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .interview-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .interview-content {
+            padding: 25px;
+        }
+        
+        .interview-content h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .interview-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .beginner {
+            background-color: #e3fafc;
+            color: #1098ad;
+        }
+        
+        .intermediate {
+            background-color: #fff3bf;
+            color: #f08c00;
+        }
+        
+        .advanced {
+            background-color: #ffebee;
+            color: #e53935;
+        }
+        
+        /* How It Works Section */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .step {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 20px;
+        }
+        
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .step p {
+            color: #666;
+        }
+        
+        /* Interview Interface */
+        .interview-interface {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 2000;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .interview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .interview-main {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .interview-questions {
+            flex: 1;
+        }
+        
+        .question-card {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .question-card h3 {
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .response-area {
+            margin-top: 15px;
+        }
+        
+        .response-area textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            min-height: 100px;
+            resize: vertical;
+            font-size: 16px;
+        }
+        
+        .interview-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .interview-sidebar {
+            width: 300px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+        }
+        
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+        
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .ai-feedback {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .ai-feedback h4 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .close-interview {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background: var(--primary-color);
+        }
+        
+        /* Results Modal */
+        .results-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .score-summary {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        
+        .score-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background-color: #f8f9fa;
+        }
+        
+        .score-value {
+            font-size: 36px;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .detailed-feedback {
+            margin-top: 20px;
+        }
+        
+        .detailed-feedback h3 {
+            margin: 20px 0 15px;
+            color: var(--secondary-color);
+        }
+        
+        .feedback-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Login Modal Styles */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auth-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .auth-tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .auth-footer a {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Protected Content Overlay */
+        .protected-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            border-radius: var(--border-radius);
+        }
+        
+        .protected-overlay h3 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        /* Quit Message Modal */
+        .message-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
+        }
+        
+        .message-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        .message-box h2 {
+            color: var(--warning-color);
+            margin-bottom: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .footer-section p {
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Logged In State */
+        .logged-in-only {
+            display: none;
+        }
+
+        .logged-out-only {
+            display: block;
+        }
+
+        body.logged-in .logged-in-only {
+            display: block;
+        }
+
+        body.logged-in .logged-out-only {
+            display: none;
+        }
+
+        body.logged-in .protected-overlay {
+            display: none;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .interview-main {
+                flex-direction: column;
+            }
+            
+            .interview-sidebar {
+                width: 100%;
+            }
+            
+            .score-summary {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .footer-section {
+                min-width: 100%;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Splash Dashboard -->
+<div id="splash-screen" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeOut 0.5s ease-in-out 2s forwards;
+">
+    <i class="fas fa-robot" style="font-size: 80px; color: white; margin-bottom: 20px;"></i>
+    <h1 style="color: white; font-size: 40px;">AI-Interviewer</h1>
+</div>
+
+<style>
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+</style>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-robot"></i>
+                    AI-Interviewer
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#interview-types">Interview Types</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li class="logged-out-only"><a href="#" class="btn btn-outline" id="authBtn">Login</a></li>
+                    <li class="logged-in-only"><a href="#" class="btn btn-outline" id="logoutBtn">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="loginTab">Login</div>
+                <div class="auth-tab" id="registerTab">Register</div>
+            </div>
+            
+            <div class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <button class="btn" id="loginBtn">Login</button>
+                <div class="auth-footer">
+                    Don't have an account? <a id="showRegister">Register</a>
+                </div>
+            </div>
+            
+            <div class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirm">Confirm Password</label>
+                    <input type="password" id="registerConfirm" placeholder="Confirm your password">
+                </div>
+                <button class="btn" id="registerBtn">Register</button>
+                <div class="auth-footer">
+                    Already have an account? <a id="showLogin">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>AI-Powered Interview Practice</h1>
+            <p>Prepare for your dream job with our intelligent interview simulator. Get realistic practice and personalized feedback to improve your skills.</p>
+            <div class="logged-out-only">
+                <a href="#" class="btn" id="heroAuthBtn">Get Started</a>
+            </div>
+            <div class="logged-in-only">
+                <a href="#interview-types" class="btn">Start Practicing</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interview Types Section -->
+    <section id="interview-types" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Choose Your Interview Type</h2>
+                <p>Select from our wide range of interview simulations tailored for beginners and students.</p>
+            </div>
+            <div class="interview-types">
+                <!-- Technical Interview -->
+                <div class="interview-card" data-type="technical">
+                    <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Technical Interview">
+                    <div class="interview-content">
+                        <span class="difficulty beginner">Beginner</span>
+                        <h3>Technical Interview</h3>
+                        <p>Practice coding challenges and technical questions commonly asked in software engineering interviews.</p>
+                        <button class="btn start-interview logged-in-only">Start Interview</button>
+                        <div class="protected-overlay logged-out-only">
+                            <h3>Please login to access interviews</h3>
+                            <button class="btn" id="loginPromptBtn1">Login / Register</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Behavioral Interview -->
+                <div class="interview-card" data-type="behavioral">
+                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Behavioral Interview">
+                    <div class="interview-content">
+                        <span class="difficulty beginner">Beginner</span>
+                        <h3>Behavioral Interview</h3>
+                        <p>Master the art of answering situational and behavioral questions with confidence.</p>
+                        <button class="btn start-interview logged-in-only">Start Interview</button>
+                        <div class="protected-overlay logged-out-only">
+                            <h3>Please login to access interviews</h3>
+                            <button class="btn" id="loginPromptBtn2">Login / Register</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- HR Interview -->
+                <div class="interview-card" data-type="hr">
+                    <img src="https://images.unsplash.com/photo-1573497491765-dccce02b29df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="HR Interview">
+                    <div class="interview-content">
+                        <span class="difficulty beginner">Beginner</span>
+                        <h3>HR Interview</h3>
+                        <p>Prepare for general HR questions about your background, experience, and career goals.</p>
+                        <button class="btn start-interview logged-in-only">Start Interview</button>
+                        <div class="protected-overlay logged-out-only">
+                            <h3>Please login to access interviews</h3>
+                            <button class="btn" id="loginPromptBtn3">Login / Register</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mock Interview -->
+                <div class="interview-card" data-type="mock">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Mock Interview">
+                    <div class="interview-content">
+                        <span class="difficulty intermediate">Intermediate</span>
+                        <h3>Full Mock Interview</h3>
+                        <p>Complete simulation combining technical, behavioral, and HR questions for comprehensive practice.</p>
+                        <button class="btn start-interview logged-in-only">Start Interview</button>
+                        <div class="protected-overlay logged-out-only">
+                            <h3>Please login to access interviews</h3>
+                            <button class="btn" id="loginPromptBtn4">Login / Register</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campus Placement -->
+                <div class="interview-card" data-type="campus">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Campus Placement">
+                    <div class="interview-content">
+                        <span class="difficulty beginner">Beginner</span>
+                        <h3>Campus Placement</h3>
+                        <p>Specialized interview preparation for college campus recruitment drives.</p>
+                        <button class="btn start-interview logged-in-only">Start Interview</button>
+                        <div class="protected-overlay logged-out-only">
+                            <h3>Please login to access interviews</h3>
+                            <button class="btn" id="loginPromptBtn5">Login / Register</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Internship Interview -->
+                <div class="interview-card" data-type="internship">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Internship Interview">
+                    <div class="interview-content">
+                        <span class="difficulty beginner">Beginner</span>
+                        <h3>Internship Interview</h3>
+                        <p>Practice questions specifically tailored for internship interviews.</p>
+                        <button class="btn start-interview logged-in-only">Start Interview</button>
+                        <div class="protected-overlay logged-out-only">
+                            <h3>Please login to access interviews</h3>
+                            <button class="btn" id="loginPromptBtn6">Login / Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section" style="background-color: #f5f7fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Get interview-ready in just three simple steps</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">1</div>
+                    <h3>Select Interview Type</h3>
+                    <p>Choose from our various interview simulations based on your needs and skill level.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">2</div>
+                    <h3>Complete the Interview</h3>
+                    <p>Answer questions in a realistic interview environment with our AI interviewer.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <h3>Get Detailed Feedback</h3>
+                    <p>Receive comprehensive analysis and suggestions for improvement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About AI-Interviewer</h3>
+                    <p>AI-Interviewer helps students and beginners prepare for job interviews with AI-powered practice and feedback.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#features" style="color: #aaa; text-decoration: none;">Features</a></p>
+                    <p><a href="#interview-types" style="color: #aaa; text-decoration: none;">Interview Types</a></p>
+                    <p><a href="#how-it-works" style="color: #aaa; text-decoration: none;">How It Works</a></p>
+                    <p><a href="#" style="color: #aaa; text-decoration: none;">Privacy Policy</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@interviewai.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Tech Street, Silicon Valley, CA</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AI-Interviewer. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interview Interface (Hidden by default) -->
+    <div class="interview-interface" id="interviewInterface">
+        <div class="container">
+            <div class="interview-header">
+                <h2 id="currentInterviewType">Technical Interview</h2>
+                <button class="close-interview" id="closeInterview">&times;</button>
+            </div>
+            
+            <div class="interview-main">
+                <div class="interview-questions" id="interviewQuestions">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+                
+                <div class="interview-sidebar">
+                    <div class="timer" id="interviewTimer">00:00</div>
+                    
+                    <div class="progress-container">
+                        <h4>Interview Progress</h4>
+                        <div class="progress-bar">
+                            <div class="progress" id="interviewProgress"></div>
+                        </div>
+                        <p id="progressText">Question 1 of 5</p>
+                    </div>
+                    
+                    <!-- Navigation Dots -->
+                    <div class="nav-dots" id="navDots"></div>
+                    
+                    <div class="ai-feedback" id="aiFeedback">
+                        <h4>AI Feedback</h4>
+                        <p>Complete the current question to receive feedback.</p>
+                    </div>
+                    
+                    <button class="btn" id="submitInterview" style="width: 100%; margin-top: 20px;">Submit Interview</button>
+                    <button class="btn" onclick="quitInterview()" style="width: 100%; margin-top: 10px; background: var(--warning-color);">Quit Interview</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal (Hidden by default) -->
+    <div class="results-modal" id="resultsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Interview Results</h2>
+                <button class="close-interview" id="closeModal">&times;</button>
+            </div>
+            
+            <div class="score-summary">
+                <div class="score-card">
+                    <div class="score-value" id="overallScore">8.2</div>
+                    <p>Overall Score</p>
+                </div>
+                <div class="score-card">
+                    <div class="score-value" id="confidenceScore">7.5</div>
+                    <p>Confidence</p>
+                </div>
+                <div class="score-card">
+                    <div class="score-value" id="technicalScore">8.7</div>
+                    <p>Technical</p>
+                </div>
+                <div class="score-card">
+                    <div class="score-value" id="communicationScore">8.0</div>
+                    <p>Communication</p>
+                </div>
+            </div>
+            
+            <div class="detailed-feedback">
+                <h3>Detailed Feedback</h3>
+                <div id="feedbackItems">
+                    <!-- Feedback items will be dynamically inserted here -->
+                </div>
+            </div>
+            
+            <div class="interview-controls" style="margin-top: 30px;">
+                <button class="btn btn-outline" id="saveResults">Save Results</button>
+                <button class="btn" id="tryAgain">Try Another Interview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quit Message Modal -->
+    <div class="message-modal" id="quitMessage">
+        <div class="message-box">
+            <h2>OOPS!!</h2>
+            <p>YOU HAVE EXITED THE INTERVIEW BEFORE COMPLETION</p>
+            <button class="btn" onclick="closeQuitMessage()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Interview Questions Database
+        const interviewQuestions = {
+            technical: [
+                {
+                    question: "Explain the difference between let, const, and var in JavaScript.",
+                    tips: "Focus on scope, hoisting, and reassignment capabilities.",
+                    sampleAnswer: "The main differences are in their scope and hoisting behavior. var is function-scoped and hoisted, let and const are block-scoped. let allows reassignment while const doesn't."
+                },
+                {
+                    question: "What is a closure in JavaScript? Can you provide an example?",
+                    tips: "Explain how closures allow access to outer function's scope from an inner function.",
+                    sampleAnswer: "A closure is a function that has access to its own scope, the outer function's variables, and global variables. Example: function outer() { let x = 5; return function inner() { console.log(x); }; }"
+                },
+                {
+                    question: "How would you optimize a slow-loading webpage?",
+                    tips: "Mention techniques like lazy loading, image optimization, and code splitting.",
+                    sampleAnswer: "I would optimize images, implement lazy loading, minify CSS/JS, use a CDN, enable caching, and reduce render-blocking resources."
+                },
+                {
+                    question: "Explain the concept of 'this' in JavaScript.",
+                    tips: "Discuss how its value is determined by how a function is called.",
+                    sampleAnswer: "'this' refers to the object that the function is a property of. Its value depends on how the function is called (as a method, constructor, etc.)."
+                },
+                {
+                    question: "What are promises in JavaScript and how do they work?",
+                    tips: "Explain the problems with callbacks and how promises solve them.",
+                    sampleAnswer: "Promises represent eventual completion of async operations. They can be in pending, fulfilled, or rejected states, and allow chaining with .then() and error handling with .catch()."
+                }
+            ],
+            behavioral: [
+                {
+                    question: "Tell me about a time you faced a difficult challenge and how you overcame it.",
+                    tips: "Use the STAR method (Situation, Task, Action, Result).",
+                    sampleAnswer: "In my last project (Situation), we had a tight deadline (Task). I organized the team into pairs, prioritized tasks, and worked extra hours (Action). We delivered on time with positive feedback (Result)."
+                },
+                {
+                    question: "Describe a situation where you had to work with a difficult team member.",
+                    tips: "Focus on your conflict resolution skills and positive outcome.",
+                    sampleAnswer: "A teammate wasn't contributing equally. I privately discussed my concerns, learned they were struggling with personal issues, and we adjusted workloads temporarily. They later became one of our top performers."
+                },
+                {
+                    question: "Give an example of when you showed leadership.",
+                    tips: "Even if you weren't in a formal leadership role, show initiative.",
+                    sampleAnswer: "When our project manager left suddenly, I organized daily standups, tracked tasks, and ensured communication until a replacement was hired. The project stayed on track."
+                },
+                {
+                    question: "Tell me about a time you failed and what you learned.",
+                    tips: "Be honest but focus on the learning experience.",
+                    sampleAnswer: "I once missed a bug that caused a production issue. Now I always write more comprehensive tests and implement peer code reviews."
+                },
+                {
+                    question: "How do you handle multiple deadlines?",
+                    tips: "Show your organizational and prioritization skills.",
+                    sampleAnswer: "I list all tasks, prioritize by urgency/importance, estimate time needed, and communicate early if adjustments are needed. I use tools like Trello to stay organized."
+                }
+            ],
+            hr: [
+                {
+                    question: "Tell me about yourself.",
+                    tips: "Keep it professional, focus on education and relevant experience.",
+                    sampleAnswer: "I'm a Computer Science graduate from XYZ University with internship experience at ABC Corp where I developed web applications using React and Node.js."
+                },
+                {
+                    question: "Why do you want to work for our company?",
+                    tips: "Show you've researched the company and align with their values.",
+                    sampleAnswer: "I admire your innovative approach to [specific product/technology]. My skills in [relevant skill] would contribute to your team's success in [specific area]."
+                },
+                {
+                    question: "Where do you see yourself in 5 years?",
+                    tips: "Show ambition but also commitment to the role you're applying for.",
+                    sampleAnswer: "I hope to grow into a senior developer role, taking on more complex projects and mentoring junior team members, while continuing to learn new technologies."
+                },
+                {
+                    question: "What are your strengths and weaknesses?",
+                    tips: "For weaknesses, show how you're working to improve.",
+                    sampleAnswer: "My strengths are problem-solving and teamwork. A weakness was public speaking, so I joined Toastmasters and have improved significantly."
+                },
+                {
+                    question: "What salary are you expecting?",
+                    tips: "Research typical salaries for the role and experience level.",
+                    sampleAnswer: "Based on my research and experience, I'm expecting in the range of [reasonable range] for this position in our area."
+                }
+            ],
+            mock: [
+                {
+                    question: "Explain a technical concept you're passionate about to a non-technical person.",
+                    tips: "Show your communication skills and ability to simplify complex ideas.",
+                    sampleAnswer: "I'd explain APIs like a waiter in a restaurant - you tell the waiter (API) what you want (request), they communicate with the kitchen (server), and bring back your food (response)."
+                },
+                {
+                    question: "How would you design a URL shortening service like bit.ly?",
+                    tips: "Cover database design, algorithm for short URLs, scaling considerations.",
+                    sampleAnswer: "I'd use a database to store original URLs, generate short codes using base62 encoding of auto-incremented IDs, implement caching for popular links, and consider distributed systems for scaling."
+                },
+                {
+                    question: "Tell me about a time you had to learn something new quickly.",
+                    tips: "Show your learning process and ability to adapt.",
+                    sampleAnswer: "When my team adopted GraphQL, I spent a weekend going through documentation, building sample projects, and by Monday was able to contribute to our implementation."
+                },
+                {
+                    question: "What would you do in your first 30 days at this company?",
+                    tips: "Show you'd focus on learning and adding value quickly.",
+                    sampleAnswer: "I'd learn the codebase, understand current projects, build relationships with the team, identify quick wins to contribute, and establish my long-term goals with my manager."
+                },
+                {
+                    question: "Do you have any questions for us?",
+                    tips: "Prepare thoughtful questions about the role, team, or company.",
+                    sampleAnswer: "What are the team's biggest technical challenges right now? How do you measure success for this position? What opportunities are there for professional development?"
+                }
+            ],
+            campus: [
+                {
+                    question: "Why should we hire you over other candidates?",
+                    tips: "Highlight unique skills or experiences without putting others down.",
+                    sampleAnswer: "My combination of academic projects in [relevant area] and internship experience gives me both theoretical knowledge and practical skills. I'm also a quick learner who thrives in collaborative environments."
+                },
+                {
+                    question: "How do you handle criticism?",
+                    tips: "Show you can take feedback positively and use it to improve.",
+                    sampleAnswer: "I see criticism as an opportunity to grow. In my algorithms class, I initially struggled but sought feedback, practiced more, and improved my grade from a B to an A."
+                },
+                {
+                    question: "What extracurricular activities have you participated in?",
+                    tips: "Highlight leadership, teamwork, or relevant technical activities.",
+                    sampleAnswer: "I was president of the Computer Science Club where we organized hackathons and coding workshops. I also volunteered teaching coding to underprivileged students."
+                },
+                {
+                    question: "How do you stay updated with technology trends?",
+                    tips: "Mention specific blogs, podcasts, or communities you follow.",
+                    sampleAnswer: "I follow tech blogs like Dev.to, listen to podcasts like Syntax, participate in local meetups, and regularly build small projects with new technologies."
+                },
+                {
+                    question: "Describe a project you're proud of from your coursework.",
+                    tips: "Focus on what you learned and how it applies to the job.",
+                    sampleAnswer: "I built a campus navigation app using React Native that won our department's innovation award. It taught me about mobile development, APIs, and working with real user feedback."
+                }
+            ],
+            internship: [
+                {
+                    question: "What do you hope to gain from this internship?",
+                    tips: "Connect your learning goals to the company's work.",
+                    sampleAnswer: "I hope to develop practical skills in [relevant technologies], understand real-world software development processes, and contribute meaningfully to your team's projects."
+                },
+                {
+                    question: "How do you prioritize when you have multiple assignments due?",
+                    tips: "Show your time management and organizational skills.",
+                    sampleAnswer: "I list all assignments with deadlines, estimate time required, prioritize by urgency and importance, and create a schedule. I also communicate early if I foresee any issues."
+                },
+                {
+                    question: "What technical skills are you most comfortable with?",
+                    tips: "Be honest but highlight relevant skills for the internship.",
+                    sampleAnswer: "I'm proficient in Java and Python from coursework, have built web projects with HTML/CSS/JavaScript, and am comfortable with data structures and algorithms."
+                },
+                {
+                    question: "Describe a time you worked in a team.",
+                    tips: "Highlight collaboration, communication, and conflict resolution.",
+                    sampleAnswer: "In my database course, our 4-person team built a library system. I designed the schema, coordinated merges via GitHub, and we presented our work to the class."
+                },
+                {
+                    question: "What questions do you have about our internship program?",
+                    tips: "Ask about mentorship, projects, or learning opportunities.",
+                    sampleAnswer: "What kind of projects will interns work on? How are interns mentored? Are there opportunities to present our work at the end of the internship?"
+                }
+            ]
+        };
+
+        // DOM Elements
+        const startInterviewButtons = document.querySelectorAll('.start-interview');
+        const interviewInterface = document.getElementById('interviewInterface');
+        const closeInterviewButton = document.getElementById('closeInterview');
+        const interviewQuestionsContainer = document.getElementById('interviewQuestions');
+        const currentInterviewTypeElement = document.getElementById('currentInterviewType');
+        const progressTextElement = document.getElementById('progressText');
+        const interviewProgressElement = document.getElementById('interviewProgress');
+        const aiFeedbackElement = document.getElementById('aiFeedback');
+        const submitInterviewButton = document.getElementById('submitInterview');
+        const resultsModal = document.getElementById('resultsModal');
+        const closeModalButton = document.getElementById('closeModal');
+        const feedbackItemsContainer = document.getElementById('feedbackItems');
+        const tryAgainButton = document.getElementById('tryAgain');
+        const navDotsContainer = document.getElementById('navDots');
+        const quitMessageModal = document.getElementById('quitMessage');
+
+        // Auth DOM Elements
+        const authModal = document.getElementById('authModal');
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const authBtn = document.getElementById('authBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const heroAuthBtn = document.getElementById('heroAuthBtn');
+
+        // Interview State
+        let currentInterviewType = '';
+        let currentQuestionIndex = 0;
+        let userResponses = [];
+        let interviewTimer;
+        let secondsElapsed = 0;
+        let isLoggedIn = false;
+
+        // Check login state from localStorage
+        function checkLoginState() {
+            const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (loggedIn) {
+                document.body.classList.add('logged-in');
+                isLoggedIn = true;
+            } else {
+                document.body.classList.remove('logged-in');
+                isLoggedIn = false;
+            }
+        }
+
+        // Initialize
+        checkLoginState();
+
+        // Auth Event Listeners
+        authBtn.addEventListener('click', () => {
+            authModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        heroAuthBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Login prompt buttons for each interview card
+        for (let i = 1; i <= 6; i++) {
+            document.getElementById(`loginPromptBtn${i}`).addEventListener('click', () => {
+                authModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+        });
+
+        showRegister.addEventListener('click', () => {
+            registerTab.click();
+        });
+
+        showLogin.addEventListener('click', () => {
+            loginTab.click();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                authModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Simplified Login/Register functionality
+        loginBtn.addEventListener('click', () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Simple login - no Firebase
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            document.body.classList.add('logged-in');
+            authModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Reset form
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        });
+
+        registerBtn.addEventListener('click', () => {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirm = document.getElementById('registerConfirm').value;
+            
+            if (!name || !email || !password || !confirm) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (password !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            // Simple registration - no Firebase
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            document.body.classList.add('logged-in');
+            authModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Reset form
+            document.getElementById('registerName').value = '';
+            document.getElementById('registerEmail').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerConfirm').value = '';
+        });
+
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', 'false');
+            document.body.classList.remove('logged-in');
+        });
+
+        // Start Interview
+        startInterviewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                currentInterviewType = this.closest('.interview-card').dataset.type;
+                currentInterviewTypeElement.textContent = this.closest('.interview-card').querySelector('h3').textContent;
+                startInterview();
+            });
+        });
+
+        function startInterview() {
+            // Reset state
+            currentQuestionIndex = 0;
+            userResponses = [];
+            secondsElapsed = 0;
+            
+            // Show interview interface
+            interviewInterface.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Start timer
+            updateTimer();
+            interviewTimer = setInterval(updateTimer, 1000);
+            
+            // Load first question
+            loadQuestion();
+            
+            // Render navigation dots
+            renderDots();
+        }
+
+        function updateTimer() {
+            secondsElapsed++;
+            const minutes = Math.floor(secondsElapsed / 60);
+            const seconds = secondsElapsed % 60;
+            document.getElementById('interviewTimer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function renderDots() {
+            const questions = interviewQuestions[currentInterviewType];
+            navDotsContainer.innerHTML = '';
+            
+            for (let i = 0; i < questions.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (i === currentQuestionIndex) {
+                    dot.classList.add('active');
+                }
+                
+                dot.addEventListener('click', () => {
+                    saveResponse();
+                    currentQuestionIndex = i;
+                    loadQuestion();
+                });
+                
+                navDotsContainer.appendChild(dot);
+            }
+        }
+
+        function loadQuestion() {
+            const questions = interviewQuestions[currentInterviewType];
+            const currentQuestion = questions[currentQuestionIndex];
+            
+            // Update progress
+            progressTextElement.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            interviewProgressElement.style.width = `${(currentQuestionIndex / questions.length) * 100}%`;
+            
+            // Create question HTML
+            interviewQuestionsContainer.innerHTML = `
+                <div class="question-card">
+                    <h3>${currentQuestion.question}</h3>
+                    <p><strong>Tips:</strong> ${currentQuestion.tips}</p>
+                    
+                    <div class="response-area">
+                        <label for="userResponse">Your Response:</label>
+                        <textarea id="userResponse" placeholder="Type your answer here..."></textarea>
+                    </div>
+                    
+                    <div class="interview-controls">
+                        ${currentQuestionIndex > 0 ? 
+                            '<button class="btn btn-outline" id="prevQuestion">Previous</button>' : 
+                            '<div></div>'}
+                        <button class="btn" id="nextQuestion">
+                            ${currentQuestionIndex < questions.length - 1 ? 'Next' : 'Finish'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners
+            if (currentQuestionIndex > 0) {
+                document.getElementById('prevQuestion').addEventListener('click', goToPreviousQuestion);
+            }
+            
+            document.getElementById('nextQuestion').addEventListener('click', goToNextQuestion);
+            
+            // Restore previous response if exists
+            if (userResponses[currentQuestionIndex]) {
+                document.getElementById('userResponse').value = userResponses[currentQuestionIndex];
+            }
+            
+            // Update navigation dots
+            updateDots();
+            
+            // Provide sample answer after a delay (simulating AI thinking)
+            setTimeout(() => {
+                aiFeedbackElement.innerHTML = `
+                    <h4>Sample Answer</h4>
+                    <p>${currentQuestion.sampleAnswer}</p>
+                `;
+            }, 1500);
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentQuestionIndex);
+            });
+        }
+
+        function goToPreviousQuestion() {
+            saveResponse();
+            currentQuestionIndex--;
+            loadQuestion();
+        }
+
+        function goToNextQuestion() {
+            saveResponse();
+            
+            const questions = interviewQuestions[currentInterviewType];
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                finishInterview();
+            }
+        }
+
+        function saveResponse() {
+            const response = document.getElementById('userResponse').value;
+            userResponses[currentQuestionIndex] = response;
+        }
+
+        function finishInterview() {
+            clearInterval(interviewTimer);
+            showResults();
+        }
+
+        function showResults() {
+            // Generate random scores for demo purposes
+            const overallScore = (Math.random() * 2 + 7).toFixed(1);
+            const confidenceScore = (Math.random() * 2 + 6.5).toFixed(1);
+            const technicalScore = (Math.random() * 2 + 7).toFixed(1);
+            const communicationScore = (Math.random() * 2 + 7).toFixed(1);
+            
+            document.getElementById('overallScore').textContent = overallScore;
+            document.getElementById('confidenceScore').textContent = confidenceScore;
+            document.getElementById('technicalScore').textContent = technicalScore;
+            document.getElementById('communicationScore').textContent = communicationScore;
+            
+            // Generate feedback items
+            const questions = interviewQuestions[currentInterviewType];
+            feedbackItemsContainer.innerHTML = '';
+            
+            questions.forEach((question, index) => {
+                const feedbackItem = document.createElement('div');
+                feedbackItem.className = 'feedback-item';
+                
+                // Generate random feedback for demo purposes
+                const strengths = ["clear explanation", "good structure", "technical accuracy", "concise response", "relevant example"];
+                const improvements = ["could expand more", "needs more specific example", "technical detail could be deeper", "structure could be improved", "more confidence needed"];
+                
+                const randomStrength = strengths[Math.floor(Math.random() * strengths.length)];
+                const randomImprovement = improvements[Math.floor(Math.random() * improvements.length)];
+                
+                feedbackItem.innerHTML = `
+                    <h4>Question ${index + 1}: ${question.question}</h4>
+                    <p><strong>Your response:</strong> ${userResponses[index] || 'No response provided'}</p>
+                    <p><strong>Strength:</strong> ${randomStrength}</p>
+                    <p><strong>Improvement:</strong> ${randomImprovement}</p>
+                `;
+                
+                feedbackItemsContainer.appendChild(feedbackItem);
+            });
+            
+            // Show modal
+            interviewInterface.style.display = 'none';
+            resultsModal.style.display = 'flex';
+        }
+
+        // Close interview
+        closeInterviewButton.addEventListener('click', function() {
+            clearInterval(interviewTimer);
+            interviewInterface.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal
+        closeModalButton.addEventListener('click', function() {
+            resultsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Try another interview
+        tryAgainButton.addEventListener('click', function() {
+            resultsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('interview-types').scrollIntoView();
+        });
+
+        // Submit interview (early submission)
+        submitInterviewButton.addEventListener('click', function() {
+            if (confirm('Are you sure you want to submit your interview now?')) {
+                finishInterview();
+            }
+        });
+
+        // Quit interview functionality
+        function quitInterview() {
+            quitMessageModal.style.display = 'flex';
+            clearInterval(interviewTimer);
+        }
+
+        function closeQuitMessage() {
+            quitMessageModal.style.display = 'none';
+            interviewInterface.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
